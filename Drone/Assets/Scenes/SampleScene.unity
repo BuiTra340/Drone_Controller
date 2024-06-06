@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 777ab6f8a28814b4f8743f807c086e4d, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.28172153, g: 0.27056238, b: 0.5118285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -761,7 +761,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.22038488, y: -0.000000008391666, z: 0.0000000018960138, w: 0.975413}
+  m_LocalRotation: {x: 0.22038488, y: 0.000000008391662, z: -0.0000000018960127, w: 0.975413}
   m_LocalPosition: {x: 24.71, y: 0.5, z: 93.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -866,7 +866,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 967382974}
-  m_LocalRotation: {x: 0.22038488, y: -0.000000008391666, z: 0.0000000018960138, w: 0.975413}
+  m_LocalRotation: {x: 0.22038488, y: 0.000000008391662, z: -0.0000000018960127, w: 0.975413}
   m_LocalPosition: {x: 24.71, y: 0.5, z: 93.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2214,6 +2214,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   joystickMovement: {fileID: 916571108}
   joystickControlHeightAndRotation: {fileID: 2146615692}
+  moveSpeed: 0
   moveSpeedDefault: 3
   heightAndRotationSpeed: 20
   heightText: {fileID: 1934831522}

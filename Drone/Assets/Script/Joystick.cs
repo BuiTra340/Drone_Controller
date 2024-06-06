@@ -47,7 +47,7 @@ public class Joystick : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointer
         isJoystickMovement = false;
     }
 
-    public bool isJoystickPositionChange()
+    public bool isJoystickPositionNotChange()
     {
         return previousHandlePosition == handleImg.rectTransform.anchoredPosition;
     }

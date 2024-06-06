@@ -7,12 +7,13 @@ public class DroneController : MonoBehaviour
 {
     [SerializeField] private Joystick joystickMovement;
     [SerializeField] private Joystick joystickControlHeightAndRotation;
-    private float moveSpeed;
+    [SerializeField]private float moveSpeed;
     [SerializeField] private float moveSpeedDefault;
+    private float speedPerFrame;
+    private float tartgetSpeed;
     [SerializeField] private float heightAndRotationSpeed;
     private Rigidbody rigidbody;
     private bool isTilting;
-    private bool isSpeedUpdating;
     private const float timeToModifySpeed = 3f;
     private const int tiltForce = 5;
 
@@ -32,11 +33,35 @@ public class DroneController : MonoBehaviour
         LimitSpeedWithTime();
     }
 
+    private void FixedUpdate()
+    {
+        MoveDrone(joystickMovement.inputVector);
+        ControlHeightAndRotation(joystickControlHeightAndRotation.inputVector);
+    }
+
     private void LimitSpeedWithTime()
     {
-        if (joystickMovement.isJoystickMovement && !joystickMovement.isJoystickPositionChange())
+        if(joystickMovement.inputVector.magnitude == 0)
         {
-            StartCoroutine(ChangSpeedWithTime(joystickMovement.inputVector));
+            moveSpeed = 0;
+        }
+
+        if (joystickMovement.isJoystickMovement && joystickMovement.isJoystickPositionNotChange())
+        {
+            if (moveSpeed < tartgetSpeed)
+            {
+                moveSpeed += speedPerFrame * Time.deltaTime;
+            }
+            else if (moveSpeed > tartgetSpeed)
+            {
+                moveSpeed -= speedPerFrame * Time.deltaTime;
+            }
+        }
+        else if(!joystickMovement.isJoystickPositionNotChange())
+        {
+            float previousSpeed = moveSpeed;
+            tartgetSpeed = moveSpeedDefault * joystickMovement.inputVector.magnitude;
+            speedPerFrame = Mathf.Abs((tartgetSpeed - previousSpeed)) / timeToModifySpeed;
         }
     }
 
@@ -55,10 +80,12 @@ public class DroneController : MonoBehaviour
     private void HeightAndSpeedUI()
     {
         heightText.text = transform.position.y.ToString("0m");
-
         if (joystickMovement.inputVector.magnitude !=0)
         {
             speedText.text = ((int)Mathf.Abs(rigidbody.velocity.magnitude)).ToString() + "km/h";
+        }else
+        {
+            speedText.text = "0km/h";
         }
     }
 
@@ -71,13 +98,6 @@ public class DroneController : MonoBehaviour
             StartCoroutine(TiltDroneWhenMove(xRotation, zRotation));
         }
     }
-
-    private void FixedUpdate()
-    {
-        MoveDrone(joystickMovement.inputVector);
-        ControlHeightAndRotation(joystickControlHeightAndRotation.inputVector);
-    }
-
     private void MoveDrone(Vector2 inputVector)
     {
         Vector3 movementDirection = transform.forward * inputVector.y + transform.right * inputVector.x;
@@ -135,30 +155,5 @@ public class DroneController : MonoBehaviour
         }
         transform.rotation = targetRotation;
         isTilting = false;
-    }
-
-    private IEnumerator ChangSpeedWithTime(Vector2 inputVector)
-    {
-        float timer = 0;
-        float currentSpeed = moveSpeed;
-        while (timer < timeToModifySpeed)
-        {
-            if (!joystickMovement.isJoystickMovement)
-            {
-                moveSpeed = 0;
-                yield break;
-            }
-            if (!joystickMovement.isJoystickPositionChange())
-            {
-                yield return new WaitForSeconds(.02f);
-                StartCoroutine(ChangSpeedWithTime(inputVector));
-                yield break;
-            }
-            timer += Time.deltaTime; 
-            Debug.Log(timer);
-            moveSpeed = Mathf.Lerp(currentSpeed, moveSpeedDefault * inputVector.magnitude, timer / timeToModifySpeed);
-            yield return null;
-        }
-        Debug.LogWarning("Max speed = " + inputVector.magnitude * moveSpeedDefault);
     }
 }
